@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Czas generowania: 29 Cze 2021, 17:23
+-- Czas generowania: 06 Lip 2021, 10:36
 -- Wersja serwera: 10.4.18-MariaDB
 -- Wersja PHP: 8.0.3
 
@@ -45,10 +45,13 @@ CREATE TABLE `accidents` (
 --
 
 INSERT INTO `accidents` (`id`, `type`, `status`, `machine_id`, `event`, `works`, `start_data_and_time`, `finish_data_and_time`, `created_at`, `updated_at`) VALUES
-(1, 'defect', 'waiting for parts', 1, 'Nie działa Panel HMI', 'Wymiana panelu', '2021-05-24 20:45:00', '2021-05-24 21:00:00', '2021-05-24 18:45:07', '2021-06-27 15:42:41'),
-(2, 'accident', 'waiting for parts', 2, 'Brak zasilania', NULL, '2021-05-25 19:42:00', NULL, '2021-05-25 17:42:12', '2021-06-22 16:45:58'),
-(3, 'accident', 'registration', 2, 'Skrzywiona belka główna', NULL, '2021-06-27 15:41:00', NULL, '2021-06-27 13:41:14', '2021-06-27 13:41:14'),
-(4, 'defect', 'registration', 1, 'Komora próżniowa nie odzyskuje SF6', NULL, '2021-06-27 17:41:00', NULL, '2021-06-27 15:41:50', '2021-06-27 15:41:50');
+(1, 'defect', 'finished', 1, 'Nie działa Panel HMI', 'Wymiana panelu', '2021-05-24 20:45:00', '2021-05-24 21:00:00', '2021-05-24 18:45:07', '2021-07-03 12:53:15'),
+(2, 'accident', 'finished', 2, 'Brak zasilania', 'Wymiana przewodu zasilającego', '2021-05-25 19:42:00', '2021-07-02 08:00:00', '2021-05-25 17:42:12', '2021-07-02 05:58:37'),
+(3, 'accident', 'finished', 2, 'Skrzywiona belka główna', NULL, '2021-06-27 15:41:00', '2021-06-30 17:10:00', '2021-06-27 13:41:14', '2021-07-04 14:44:19'),
+(4, 'defect', 'registration', 1, 'Komora próżniowa nie odzyskuje SF6', NULL, '2021-06-27 17:41:00', NULL, '2021-06-27 15:41:50', '2021-06-27 15:41:50'),
+(5, 'accident', 'finished', 1, 'Nie można uzyskać próżni', NULL, '2021-07-01 20:09:00', '2021-07-02 15:55:00', '2021-07-01 18:09:10', '2021-07-04 13:55:43'),
+(6, 'accident', 'registration', 2, 'Nie pracuje pompa', NULL, '2021-07-01 20:16:00', NULL, '2021-07-01 18:16:20', '2021-07-01 18:16:20'),
+(7, 'accident', 'finished', 3, 'Nie działa podnoszenie na drugim biegu', 'Uszkodzony moduł sterujący podnoszeniem. Czekamy na dostawę.\r\nWymieniono moduł. Po wymianie wszystko pracuje prawidłowo.', '2021-07-05 14:11:00', '2021-07-05 18:00:00', '2021-07-05 12:11:53', '2021-07-05 16:04:11');
 
 -- --------------------------------------------------------
 
@@ -62,6 +65,15 @@ CREATE TABLE `accident_image` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Zrzut danych tabeli `accident_image`
+--
+
+INSERT INTO `accident_image` (`accident_id`, `image_id`, `created_at`, `updated_at`) VALUES
+(1, 22, '2021-07-01 21:13:59', '2021-07-01 21:13:59'),
+(2, 23, '2021-07-02 05:58:37', '2021-07-02 05:58:37'),
+(7, 24, '2021-07-05 16:03:22', '2021-07-05 16:03:22');
 
 -- --------------------------------------------------------
 
@@ -83,7 +95,9 @@ CREATE TABLE `accident_part` (
 INSERT INTO `accident_part` (`part_id`, `accident_id`, `created_at`, `updated_at`) VALUES
 (1, 1, '2021-05-24 18:46:31', '2021-05-24 18:46:31'),
 (4, 2, '2021-06-27 08:42:52', '2021-06-27 08:42:52'),
-(2, 2, '2021-06-27 08:42:52', '2021-06-27 08:42:52');
+(2, 2, '2021-06-27 08:42:52', '2021-06-27 08:42:52'),
+(5, 7, '2021-07-05 16:03:22', '2021-07-05 16:03:22'),
+(6, 7, '2021-07-05 16:23:35', '2021-07-05 16:23:35');
 
 -- --------------------------------------------------------
 
@@ -128,7 +142,8 @@ INSERT INTO `contractors` (`id`, `name`, `nip`, `regon`, `adress`, `personContac
 (1, 'ISKRA Zakład Maszyn i Łożysk Specjalnych Sp. z o.o.', '6570232302', '290040888', 'ul. Mielczarskiego 43, 25-709 Kielce', 'Jan Kowalski tel.: 607556890 (Handel)', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
 (2, 'Amada Sp. z o.o.', '6751491800', '122957367', 'Cholerzyn 467 32-060 Liszki', 'jan.kowalski@gmail.com Jan Kowalski tel.: 607556890 (Handel)', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
 (3, 'APVACUUM Sp. z o.o.', '7773161855', '301439770', 'ul. Klonowa 24 62-002 Suchy Las k. Poznania', 't: +48 61 656 35 30 e: biuro@apvacuum.com', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
-(4, 'RGB Elektronika Centrum Automatyki Przemysłowej', '8951985034', '021407892', 'ul. Jana Długosza 2-6 51-162 Wrocław', '24/7: +48 71 325 15 05 kontakt@rgbelektronika.pl', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10');
+(4, 'RGB Elektronika Centrum Automatyki Przemysłowej', '8951985034', '021407892', 'ul. Jana Długosza 2-6 51-162 Wrocław', '24/7: +48 71 325 15 05 kontakt@rgbelektronika.pl', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
+(5, 'ZBUD', '8711578890', '851760657', 'Żabieńska 6, 33-200 Dąbrowa', 'Łukasz Stefańczyk tel.: 607440750', 1, '2021-07-05 12:10:57', '2021-07-05 12:10:57');
 
 -- --------------------------------------------------------
 
@@ -142,6 +157,14 @@ CREATE TABLE `contractor_machine` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Zrzut danych tabeli `contractor_machine`
+--
+
+INSERT INTO `contractor_machine` (`machine_id`, `contractor_id`, `created_at`, `updated_at`) VALUES
+(2, 2, '2021-07-01 18:52:52', '2021-07-01 18:52:52'),
+(3, 5, '2021-07-05 12:11:15', '2021-07-05 12:11:15');
 
 -- --------------------------------------------------------
 
@@ -161,7 +184,8 @@ CREATE TABLE `contractor_part` (
 --
 
 INSERT INTO `contractor_part` (`part_id`, `contractor_id`, `created_at`, `updated_at`) VALUES
-(4, 2, '2021-05-27 18:29:17', '2021-05-27 18:29:17');
+(4, 2, '2021-05-27 18:29:17', '2021-05-27 18:29:17'),
+(5, 5, '2021-07-05 16:01:50', '2021-07-05 16:01:50');
 
 -- --------------------------------------------------------
 
@@ -232,7 +256,11 @@ INSERT INTO `images` (`id`, `title`, `description`, `image`, `user_id`, `created
 (5, 'Marmolada', 'test aaa', 'images/W3V57WVLA5aNSI84uAC3m5ZXY3mHGCewzfrf2GxF.bmp', 1, '2021-05-25 17:46:19', '2021-05-25 17:46:19'),
 (7, 'Test - BBB', 'BBB', 'images/cga0jt0hJ8kEsxXBHYUcxMLYRBm1SSAYLareGlAj.bmp', 1, '2021-05-26 09:34:24', '2021-05-26 09:34:24'),
 (10, 'Wymiana panelu', 'Test - CCC', 'images/G1d3DwOoEQYAO8YfuPWnqwUmUvH2YmUuQ6ZrEcvW.jpg', 1, '2021-05-27 11:32:52', '2021-05-27 11:32:52'),
-(20, 'test  zapisu', 'test', 'images/SlCz1dRM3UT0CKVASwXQsobe0OsJEk77WWlDTiD6.jpg', 1, '2021-06-05 17:54:10', '2021-06-05 17:54:10');
+(20, 'test  zapisu', 'test', 'images/SlCz1dRM3UT0CKVASwXQsobe0OsJEk77WWlDTiD6.jpg', 1, '2021-06-05 17:54:10', '2021-06-05 17:54:10'),
+(21, 'Marmolada', 'test', 'images/9CsWe2832ewAmHAaOVfzvMo1Ec1fOixjVwOeveUm.jpg', 1, '2021-07-01 21:10:14', '2021-07-01 21:10:14'),
+(22, 'Wymiana panelu', 'Test', 'images/bZP0QMSqOemvEzLKkQQyeZiP9yrygC0ERfUAX5ej.jpg', 1, '2021-07-01 21:13:52', '2021-07-01 21:13:52'),
+(23, 'Wymiana przewodu', 'Test', 'images/g3KIuq2CR9Pfw0lSAqtYrUvGx9K1opO8yygq7xGP.jpg', 1, '2021-07-02 05:58:27', '2021-07-02 05:58:27'),
+(24, 'Wymiana modułu', 'Wymiana modułu sterującego wciągarką', 'images/hNZwZZtM1xTUVkNkFKW0aLPiiPCkoF50pQ9Jkig2.jpg', 1, '2021-07-05 16:03:16', '2021-07-05 16:03:16');
 
 -- --------------------------------------------------------
 
@@ -308,7 +336,21 @@ INSERT INTO `logs` (`id`, `review_id`, `accident_id`, `user_id`, `check`, `creat
 (30, NULL, 3, 1, 'create', '2021-06-27 13:41:14', '2021-06-27 13:41:14'),
 (31, NULL, 1, 1, 'status/', '2021-06-27 15:40:37', '2021-06-27 15:40:37'),
 (32, NULL, 4, 1, 'create', '2021-06-27 15:41:50', '2021-06-27 15:41:50'),
-(33, NULL, 1, 1, 'status/', '2021-06-27 15:42:41', '2021-06-27 15:42:41');
+(33, NULL, 1, 1, 'status/', '2021-06-27 15:42:41', '2021-06-27 15:42:41'),
+(34, NULL, 5, 1, 'create', '2021-07-01 18:09:10', '2021-07-01 18:09:10'),
+(35, NULL, 6, 1, 'create', '2021-07-01 18:16:20', '2021-07-01 18:16:20'),
+(36, NULL, 1, 1, 'empty', '2021-07-01 21:13:59', '2021-07-01 21:13:59'),
+(37, NULL, 2, 1, 'status/works/finish_data_and_time/', '2021-07-02 05:58:37', '2021-07-02 05:58:37'),
+(38, NULL, 1, 1, 'status/', '2021-07-03 12:53:15', '2021-07-03 12:53:15'),
+(39, NULL, 5, 1, 'status/finish_data_and_time/', '2021-07-04 13:55:43', '2021-07-04 13:55:43'),
+(40, NULL, 3, 1, 'status/finish_data_and_time/', '2021-07-04 14:44:19', '2021-07-04 14:44:19'),
+(41, NULL, 7, 1, 'create', '2021-07-05 12:11:53', '2021-07-05 12:11:53'),
+(42, NULL, 7, 1, 'status/works/', '2021-07-05 12:16:05', '2021-07-05 12:16:05'),
+(43, NULL, 7, 1, 'works/', '2021-07-05 16:03:22', '2021-07-05 16:03:22'),
+(44, NULL, 7, 1, 'status/finish_data_and_time/', '2021-07-05 16:04:11', '2021-07-05 16:04:11'),
+(45, 7, NULL, 1, 'create', '2021-07-05 16:15:56', '2021-07-05 16:15:56'),
+(46, 5, NULL, 1, 'realization/finish_data_and_time/', '2021-07-05 16:15:56', '2021-07-05 16:15:56'),
+(47, NULL, 7, 1, 'empty', '2021-07-05 16:23:35', '2021-07-05 16:23:35');
 
 -- --------------------------------------------------------
 
@@ -335,7 +377,8 @@ CREATE TABLE `machines` (
 
 INSERT INTO `machines` (`id`, `department_id`, `number`, `name`, `type`, `serial`, `udt`, `user_id`, `created_at`, `updated_at`) VALUES
 (1, 6, 'M-00001', 'Komora próżniowa Telstar do badania rozłączników', 'B-63797559', '', '', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
-(2, 2, 'M-00002', 'Prasa hydrauliczna krawędziowa Amada HFE 3i', 'HFE 3i 8025 8 axes', 'I100737', '', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10');
+(2, 2, 'M-00002', 'Prasa hydrauliczna krawędziowa Amada HFE 3i', 'HFE 3i 8025 8 axes', 'I100737', NULL, 1, '2021-05-24 18:43:10', '2021-07-01 18:52:52'),
+(3, 1, 'M-00003', 'Suwnica natorowa dwudźwigarowa ZBUD ZXD-2x6700/19,5e', 'ZXD-2x6700/19,5e', NULL, 'UDT3310000908', 1, '2021-07-05 12:11:15', '2021-07-05 12:11:15');
 
 -- --------------------------------------------------------
 
@@ -416,7 +459,9 @@ INSERT INTO `parts` (`id`, `ktm`, `name`, `type`, `number`, `description`, `user
 (1, 'MBA-23-456-234', 'Panel HMI 640 x 480 pixels 10.4', 'HMIGTO5310', NULL, 'Główny Panel Telstar - strategiczny', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
 (2, 'MBA-23-456-200', 'Łożysko kulkowe zwykłe (bez uszczelnienia)', NULL, '16005', 'Wymiary główne: d=25mm, D=47mm, B=8mm, rs=min0.3mm', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
 (3, 'MBA-23-456-100', 'Łożyska kulkowe wahliwe', '126 TW RHP', '74702304346', 'Wymiary główne: d=6mm, D=19mm, B=6mm', 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
-(4, 'MBA-20-458-100', 'Detektor Adixen ASI 30', NULL, NULL, NULL, 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10');
+(4, 'MBA-20-458-100', 'Detektor Adixen ASI 30', NULL, NULL, NULL, 1, '2021-05-24 18:43:10', '2021-05-24 18:43:10'),
+(5, 'MBA-23-36-123', 'Moduł sterujący suwnicą DEMAG', 'MR-12', '23-456-7789', 'Moduł wykorzystywany w suwnicach DEMAG, ZBUD', 1, '2021-07-05 16:01:50', '2021-07-05 16:01:50'),
+(6, NULL, 'Grzegorz Zubiński', NULL, NULL, NULL, 1, '2021-07-05 16:22:54', '2021-07-05 16:22:54');
 
 -- --------------------------------------------------------
 
@@ -478,7 +523,9 @@ INSERT INTO `prices` (`id`, `accidentsId`, `reviewsId`, `partsId`, `quantity`, `
 (2, NULL, 4, 4, 1.00, 235.00, 235.00, '2021-05-27 18:25:38', '2021-05-27 18:25:38'),
 (3, NULL, 4, 1, 1.00, 1340.00, 1340.00, '2021-05-27 18:25:38', '2021-05-27 18:25:38'),
 (4, 2, NULL, 4, 1.00, 1000.00, 1000.00, '2021-06-27 08:42:52', '2021-06-27 08:42:52'),
-(5, 2, NULL, 2, 2.00, 30.00, 60.00, '2021-06-27 08:42:52', '2021-06-27 08:42:52');
+(5, 2, NULL, 2, 2.00, 30.00, 60.00, '2021-06-27 08:42:52', '2021-06-27 08:42:52'),
+(6, 7, NULL, 5, 1.00, 5000.00, 5000.00, '2021-07-05 16:03:22', '2021-07-05 16:03:22'),
+(7, 7, NULL, 6, 5.00, 80.00, 400.00, '2021-07-05 16:23:35', '2021-07-05 16:23:35');
 
 -- --------------------------------------------------------
 
@@ -509,8 +556,9 @@ INSERT INTO `reviews` (`id`, `machine_id`, `action`, `works`, `comments`, `reali
 (2, 1, 'Kalibracja detektora cząstek helu', 'Kalibracja detektora cząstek helu', NULL, 'planning', 'one year', '2021-04-22 20:10:00', NULL, '2021-05-25 11:20:53', '2021-05-25 11:20:53'),
 (3, 1, 'Sprawdzenie stanu łożysk', 'Sprawdzenie stanu łożysk', NULL, 'planning', 'two weeks', '2021-05-26 11:10:00', NULL, '2021-05-26 08:45:30', '2021-05-26 08:45:30'),
 (4, 2, 'Wymiana stępla', '1. Wymiana stępla\r\n2. Wymiana czegoś tam', NULL, 'finished', 'month', '2021-05-26 20:50:00', '2021-05-27 20:30:00', '2021-05-26 18:07:11', '2021-05-27 18:26:30'),
-(5, 2, 'Wymiana stępla', '1. Wymiana stępla\r\n2. Wymiana czegoś tam', NULL, 'planning', 'month', '2021-06-27 20:30:00', NULL, '2021-05-27 18:26:30', '2021-05-27 18:26:30'),
-(6, 2, 'Kontrola prowadnika przewodów', '1. Kontrola prowadnika przewodów', NULL, 'planning', 'month', '2021-07-24 21:06:00', NULL, '2021-06-23 19:07:34', '2021-06-23 19:07:34');
+(5, 2, 'Wymiana stępla', '1. Wymiana stępla\r\n2. Wymiana czegoś tam', NULL, 'finished', 'month', '2021-06-27 20:30:00', '2021-07-05 18:15:00', '2021-05-27 18:26:30', '2021-07-05 16:15:56'),
+(6, 2, 'Kontrola prowadnika przewodów', '1. Kontrola prowadnika przewodów', NULL, 'planning', 'month', '2021-07-24 21:06:00', NULL, '2021-06-23 19:07:34', '2021-06-23 19:07:34'),
+(7, 2, 'Wymiana stępla', '1. Wymiana stępla\r\n2. Wymiana czegoś tam', NULL, 'planning', 'month', '2021-08-05 18:15:00', NULL, '2021-07-05 16:15:56', '2021-07-05 16:15:56');
 
 -- --------------------------------------------------------
 
@@ -751,7 +799,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT dla tabeli `accidents`
 --
 ALTER TABLE `accidents`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `admins`
@@ -763,7 +811,7 @@ ALTER TABLE `admins`
 -- AUTO_INCREMENT dla tabeli `contractors`
 --
 ALTER TABLE `contractors`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT dla tabeli `departments`
@@ -781,19 +829,19 @@ ALTER TABLE `failed_jobs`
 -- AUTO_INCREMENT dla tabeli `images`
 --
 ALTER TABLE `images`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT dla tabeli `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT dla tabeli `machines`
 --
 ALTER TABLE `machines`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT dla tabeli `migrations`
@@ -805,19 +853,19 @@ ALTER TABLE `migrations`
 -- AUTO_INCREMENT dla tabeli `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT dla tabeli `prices`
 --
 ALTER TABLE `prices`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT dla tabeli `roles`
